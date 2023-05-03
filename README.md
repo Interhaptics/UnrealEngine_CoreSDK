@@ -1,17 +1,17 @@
-👋 We are Interhaptics! A team of gaming and haptic enthusiasts, a team which made a design tool, an engine, SDKs and whole bunch of APIs for game devs to create powerful haptic effects for all platforms. 🎮📱🥽
+To import the Interhaptics SDK into Unreal Engine, follow these steps:
 
-Interhaptics is a haptic software for game development. The only tool you need is to create and render HD and non-HD haptics for mobile, Console, and XR.  
+1. Go YourProject folder and create a Plugins folder here (YourProject/Plugins).
+2. Go inside the Plugins folder and clone the repository here.
+3. Open the project and you will be prompt to rebuild the different modules included in the plugin. 
+4. Go in Settings > Plugins and check that Interhaptics is enabled udner Project > Other.
 
-We have reshaped Interhaptics to best fit your needs and have made it available directly here on GitHub. Understanding the frustrations of developing haptics made us create the designer and the engine that powers it all.  
+In the Content Browser, go in Settings and check Show Plugins content. Then go under Interhaptics C++ class > Interhaptics > Public, get the Haptic Manager and drag in into your viewport.
+Next you can create a new Blueprint with the Haptic Source type and use the following features:
++ General: Assign a Haptic Effect to the object to be played
++ Blueprint event graph: Set Targets: allows you to set the targets of the source between Left, Right, Both or None
++ Blueprint event graph: Play: starts all haptic events related to the source
++ Blueprint event graph: Stop: stops all haptic events related to the source
 
-We wanted to experience haptics on all platforms, all peripherals, and all technologies without developing verticalized effects for each one. We come to you with 4 commercially supported platforms today and will be releasing a lot more in the future!  
+You can check directly the documentation at https://www.interhaptics.com/doc/interhaptics-unreal-sdk/
 
-## 👇 Download Interhaptics Unreal Engine SDK
-
-+ 🥽 XR
-  + Meta Quest  COMING SOON
-+ 🎮 Console  
-  + PlayStation 5 ON REQUEST
-  + PlayStation 4 ON REQUEST
-
-*Kind reminder: To get the PlayStation SDK to develop for the DualSense you are required to be part of the SIE partner program.*
+If you need help or want to talk haptics, join us on Discord on this links https://discord.com/invite/93jU9nAX4f
