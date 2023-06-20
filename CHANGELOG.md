@@ -1,3 +1,8 @@
+# 2023.06.08
+# v1.0.1
+
++ Fix Interhaptics module exception
+
 # 2023.05.02
 # v1.0.0
 

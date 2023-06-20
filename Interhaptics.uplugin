@@ -18,10 +18,7 @@
 		{
 			"Name": "Interhaptics",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
 		},
 		{
 			"Name": "HapticEffect",
