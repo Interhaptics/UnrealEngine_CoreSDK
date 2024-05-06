@@ -6,6 +6,15 @@
 #ifndef IH_ENUMS_H
 #define IH_ENUMS_H
 
+#if PLATFORM_SWITCH
+#include <nn/ro.h>
+#define IH_GETDLLEXPORT(FNAME, DLLEXPORT, HANDLE) (nn::ro::LookupSymbol(&DLLEXPORT, FNAME).IsSuccess() ? DLLEXPORT : 0)
+#else
+#define IH_GETDLLEXPORT(FNAME, DLLEXPORT, HANDLE) (HANDLE ? (uintptr_t)FPlatformProcess::GetDllExport(HANDLE, *FString(FNAME)) : 0)
+#endif
+
+
+
 namespace Interhaptics
 {
 	namespace HapticBodyMapping

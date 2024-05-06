@@ -70,17 +70,47 @@ void AHapticSource::SetTargets(ETargetEnum Target)
 
 void AHapticSource::ConvertTarget(ETargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget)
 {
-	Interhaptics::HapticBodyMapping::GroupID		_BODYPART	= Interhaptics::HapticBodyMapping::GroupID::Hand;
+	Interhaptics::HapticBodyMapping::GroupID		_BODYPART	= Interhaptics::HapticBodyMapping::GroupID::Palm;
 	Interhaptics::HapticBodyMapping::Operator		_PLUS		= Interhaptics::HapticBodyMapping::Operator::Plus;
 	Interhaptics::HapticBodyMapping::LateralFlag	_LATERAL	= Interhaptics::HapticBodyMapping::LateralFlag::Global;
 
 	switch (Target)
 	{
+	case ETargetEnum::TE_LeftPalm:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Palm;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
+		break;
+	case ETargetEnum::TE_RightPalm:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Palm;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+		break;
+	case ETargetEnum::TE_BothPalms:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Palm;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+		break;
 	case ETargetEnum::TE_LeftHand:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Hand;
 		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
 		break;
 	case ETargetEnum::TE_RightHand:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Hand;
 		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+		break;
+	case ETargetEnum::TE_BothHands:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Hand;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+		break;
+	case ETargetEnum::TE_LeftTrigger:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Index;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
+		break;
+	case ETargetEnum::TE_RightTrigger:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Index;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+		break;
+	case ETargetEnum::TE_BothTriggers:
+		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Index;
+		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
 		break;
 	default:
 		break;

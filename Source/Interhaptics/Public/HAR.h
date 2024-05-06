@@ -1,5 +1,5 @@
 ﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
@@ -25,7 +25,14 @@ namespace InterhapticsEngine
 	INTERHAPTICS_API void AddTargetToEventMarshal(int _hMaterialID, Interhaptics::HapticBodyMapping::CommandData* _target, int _size);
 	INTERHAPTICS_API void RemoveAllTargetsFromEvent(int _hMaterialID);
 
+	INTERHAPTICS_API int startTriggerEffect(int id, bool isLeft);
+	INTERHAPTICS_API int stopTriggerEffect(bool isLeft);
+
 	static void* v_Handle;
+
+	#if PLATFORM_PS5
+	static void* v_DualSenseHandle;
+	#endif
 }
 
 #endif

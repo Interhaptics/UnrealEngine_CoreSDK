@@ -1,3 +1,22 @@
+# 2024.04.19
+# v1.1.1
+
++ Enabled support for the PS5 module
++ Enabled support for the Switch module
++ Reworked the package for Marketplace distribution
+
+# 2024.01.07
+# v1.1.0
+
++ Updated XInput provider to GameInput provider (GameInputProvider.dll supplants XInputProvider.dll) with XInput used as fallback. 
++ Added sample level HapticLevel3D which showcases playing haptics through a PlayerController blueprint class
++ Reorganized folder and file structure to be Epic Marketplace compliant
+
+# 2023.10.30
+# v1.0.2
+
++ Fix Compiler issue that could happen when loading a project just after adding the plugin
+
 # 2023.06.08
 # v1.0.1
 

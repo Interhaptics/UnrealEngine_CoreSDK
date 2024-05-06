@@ -21,5 +21,7 @@ namespace InterhapticsEngine
 		INTERHAPTICS_API void AddProvider(void* deviceHandle);
 
 		static std::vector<void*> IH_DEVICE_PROVIDERS;
+
+		static std::vector<void*>& GetDeviceProviders();
 	};
 };

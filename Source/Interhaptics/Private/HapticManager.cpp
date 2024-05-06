@@ -33,8 +33,11 @@ void AHapticManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	InterhapticsEngine::ComputeAllEvents((double)(GetWorld()->GetTimeSeconds()));
-	InterhapticsEngine::HapticDeviceManager::RenderAll();
+	if (!InterhapticsEngine::HapticDeviceManager::GetDeviceProviders().empty()) // Check if there are any devices
+	{
+		InterhapticsEngine::ComputeAllEvents((double)(GetWorld()->GetTimeSeconds()));
+		InterhapticsEngine::HapticDeviceManager::RenderAll();
+	}
 }
 
 void AHapticManager::BeginDestroy()

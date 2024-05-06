@@ -1,13 +1,13 @@
-﻿/*
- * Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/*
+ * Copyright � 2024 Go Touch VR SAS. All rights reserved.
  */
 
 using UnrealBuildTool;
 using System.IO;
 
-public class Interhaptics : ModuleRules
+public class IHGameInput : ModuleRules
 {
-	public Interhaptics(ReadOnlyTargetRules Target) : base(Target)
+	public IHGameInput(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
@@ -27,7 +27,7 @@ public class Interhaptics : ModuleRules
 			new string[]
 			{
 				"Core",
-				"HapticEffect",
+				"Interhaptics",
 				"Projects",
 				"CoreUObject",
 				"Engine",
@@ -43,21 +43,16 @@ public class Interhaptics : ModuleRules
             }
 		);
 
-		// Adjust the base path to point to the new ThirdParty folder location
-		string ThirdPartyPath = Path.Combine(ModuleDirectory, "./Lib");
-
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
-			PublicDefinitions.Add("PLATFORM_SWITCH=0");
-			PublicDefinitions.Add("PLATFORM_PS5=0");
 			// Add the import library
-			PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyPath, "x64", "Release", "HAR.lib"));
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "Lib", "Interhaptics.GameInputProvider.lib"));
 
 			// Delay-load the DLLs, so we can load them from the right place first
-			PublicDelayLoadDLLs.Add("HAR.dll");
+			PublicDelayLoadDLLs.Add("Interhaptics.GameInputProvider.dll");
 
 			// Ensure that the DLLs are staged along with the executable
-			RuntimeDependencies.Add(Path.Combine(ThirdPartyPath, "x64", "Release", "HAR.dll"));
+			RuntimeDependencies.Add(Path.Combine(ModuleDirectory, "Lib", "Interhaptics.GameInputProvider.dll"));
 		}
 	}
 }
