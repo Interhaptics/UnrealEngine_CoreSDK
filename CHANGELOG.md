@@ -1,3 +1,10 @@
+# 2024.05.21
+# v1.2.0
+
++ Enabled Sensa support
++ Added various APIs for C++ and Blueprint usage of the SDK
++ Fixed various bugs 
+
 # 2024.04.19
 # v1.1.1
 

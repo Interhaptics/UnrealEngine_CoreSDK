@@ -1,5 +1,5 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
@@ -164,7 +164,7 @@ namespace Interhaptics
 			Upper_arm = 300,
 			Lower_arm = 301,
 			Hand = 302,
-			Crane = 303,
+			Skull = 303,
 			Neck = 304,
 			Upper_leg = 305,
 			Lower_leg = 306,
@@ -197,7 +197,7 @@ namespace Interhaptics
 		struct CommandData {
 
 			/// <summary>
-			/// recommanded constructor 
+			/// recommended constructor 
 			/// </summary>
 			/// <param name="_sign">sign of the command (minus or plus)</param>
 			/// <param name="_group">group targueted</param>

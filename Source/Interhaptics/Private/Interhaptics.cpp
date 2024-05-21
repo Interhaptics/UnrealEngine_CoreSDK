@@ -1,14 +1,16 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
-#include "../Public/Interhaptics.h"
-#include "../Public/HAR.h"
-#include "../Public/HapticDeviceManager.h"
+#include "Interhaptics.h"
+#include "HAR.h"
+#include "HapticDeviceManager.h"
+#include "HapticManager.h" 
 #include "Core.h"
 #include "Modules/ModuleManager.h"
 #include "Interfaces/IPluginManager.h"
+#include "Engine/World.h"
 
 #define LOCTEXT_NAMESPACE "FInterhapticsModule"
 
@@ -46,6 +48,21 @@ void FInterhapticsModule::StartupModule()
 		}
 	}
 #endif
+#pragma endregion
+#pragma region Init Haptic Manager
+  // Register to spawn HapticManager on world initialization
+  FWorldDelegates::OnPostWorldInitialization.AddLambda([](UWorld* World, const UWorld::InitializationValues IVS)
+    {
+      if (World && World->IsGameWorld())
+      {
+        // Spawn the HapticManager
+        AHapticManager* HapticManager = World->SpawnActor<AHapticManager>();
+        if (!HapticManager)
+        {
+          UE_LOG(LogTemp, Warning, TEXT("Failed to spawn HapticManager."));
+        }
+      }
+    });
 #pragma endregion
 }
 

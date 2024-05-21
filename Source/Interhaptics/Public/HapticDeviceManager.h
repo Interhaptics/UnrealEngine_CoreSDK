@@ -1,5 +1,5 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
@@ -22,6 +22,5 @@ namespace InterhapticsEngine
 
 		static std::vector<void*> IH_DEVICE_PROVIDERS;
 
-		static std::vector<void*>& GetDeviceProviders();
-	};
+  };
 };

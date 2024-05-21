@@ -1,16 +1,17 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
 #pragma once
 
 #include "../../HapticEffect/Public/HapticEffect.h"
-#include "../Public/HAR.h"
+#include "HAR.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine.h"
 #include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 #include "HapticSource.generated.h"
 
 
@@ -26,6 +27,19 @@ enum class ETargetEnum : uint8
 	TE_LeftTrigger   UMETA(DisplayName = "Left Trigger"),
 	TE_RightTrigger  UMETA(DisplayName = "Right Trigger"),
 	TE_BothTriggers  UMETA(DisplayName = "Both Triggers"),
+  TE_LeftHead      UMETA(DisplayName = "Left Head"),
+  TE_RightHead     UMETA(DisplayName = "Right Head"),
+  TE_Head          UMETA(DisplayName = "Head"),
+  TE_LeftWaist     UMETA(DisplayName = "Left Waist"),
+  TE_RightWaist    UMETA(DisplayName = "Right Waist"),
+  TE_Waist         UMETA(DisplayName = "Entire Waist"),
+  TE_LeftChest     UMETA(DisplayName = "Left Chest"),
+  TE_RightChest    UMETA(DisplayName = "Right Chest"),
+  TE_Chest         UMETA(DisplayName = "Entire Chest"),
+  TE_LeftLeg       UMETA(DisplayName = "Left Leg"),
+  TE_RightLeg      UMETA(DisplayName = "Right Leg"),
+  TE_BothLegs      UMETA(DisplayName = "Both Legs"),
+  TE_All           UMETA(DisplayName = "All"),
 	TE_None          UMETA(DisplayName = "None")
 };
 
@@ -41,10 +55,6 @@ public:
 		UHapticEffect* HapticEffect;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics")
 		float VibrationOffset;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics")
-		float TextureOffset;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics")
-		float StiffnessOffset;
 
 	UFUNCTION(BlueprintCallable, Category = "Interhaptics")
 		int GetID();
@@ -53,13 +63,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Interhaptics")
 		void Stop();
 	UFUNCTION(BlueprintCallable, Category = "Interhaptics")
-		void SetTargets(ETargetEnum Target);
+		void SetTargets(ETargetEnum Target = ETargetEnum::TE_BothPalms);
 
 	// Sets default values for this actor's properties
 	AHapticSource();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void PostInitializeComponents() override;
+
+	// Blueprint callable function to set the intensity for this haptic source
+	UFUNCTION(BlueprintCallable, Category = "Interhaptics")
+	void SetHapticEventIntensity(float Intensity);
+
+  // Blueprint callable static function to instantiate and play a haptic effect
+  UFUNCTION(BlueprintCallable, Category = "Interhaptics", meta = (WorldContext = "WorldContextObject", AdvancedDisplay = "2"))
+  static AHapticSource* CreateAndPlayHapticSource(UObject* WorldContextObject, UHapticEffect* Effect, ETargetEnum Target = ETargetEnum::TE_BothPalms, float Vibration = 0.0f);
 
 private:	
 	int hapticEffectID = -1;

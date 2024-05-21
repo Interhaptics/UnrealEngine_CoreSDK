@@ -1,5 +1,5 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
@@ -15,7 +15,6 @@ AHapticSource::AHapticSource()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -40,7 +39,7 @@ void AHapticSource::Tick(float DeltaTime)
 
 void AHapticSource::Play()
 {
-	InterhapticsEngine::PlayEvent(hapticEffectID, (double)(VibrationOffset - GetWorld()->GetTimeSeconds()), (double)TextureOffset, (double)StiffnessOffset);
+	InterhapticsEngine::PlayEvent(hapticEffectID, (double)(-VibrationOffset - GetWorld()->GetTimeSeconds()), 0.0, 0.0);
 }
 
 void AHapticSource::Stop()
@@ -112,9 +111,101 @@ void AHapticSource::ConvertTarget(ETargetEnum Target, Interhaptics::HapticBodyMa
 		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Index;
 		_LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
 		break;
+  case ETargetEnum::TE_LeftHead:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Skull;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
+    break;
+  case ETargetEnum::TE_RightHead:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Skull;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+    break;
+  case ETargetEnum::TE_Head:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Skull;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+    break;
+  case ETargetEnum::TE_LeftWaist:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Waist;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
+    break;
+  case ETargetEnum::TE_RightWaist:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Waist;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+    break;
+  case ETargetEnum::TE_Waist:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Waist;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+    break;
+  case ETargetEnum::TE_LeftChest:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Chest;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
+    break;
+  case ETargetEnum::TE_RightChest:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Chest;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+    break;
+  case ETargetEnum::TE_Chest:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Chest;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+    break;
+  case ETargetEnum::TE_LeftLeg:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Leg;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Left;
+    break;
+  case ETargetEnum::TE_RightLeg:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Leg;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Right;
+    break;
+  case ETargetEnum::TE_BothLegs:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::Leg;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+    break;
+    case ETargetEnum::TE_All:
+    _BODYPART = Interhaptics::HapticBodyMapping::GroupID::All;
+    _LATERAL = Interhaptics::HapticBodyMapping::LateralFlag::Global;
+    break;
 	default:
 		break;
 	}
 
 	*returnTarget = Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
+}
+
+void AHapticSource::SetHapticEventIntensity(float Intensity)
+{
+	// Check if the haptic effect ID is valid and the intensity is within range
+	if (hapticEffectID != -1)
+	{
+		InterhapticsEngine::SetEventIntensity(hapticEffectID, static_cast<double>(Intensity));
+	}
+  else
+  {
+    UE_LOG(LogTemp, Warning, TEXT("AHapticSource::SetHapticEventIntensity: HapticEffectID is invalid. Effect will not be played."));
+  }
+}
+
+AHapticSource* AHapticSource::CreateAndPlayHapticSource(UObject* WorldContextObject, UHapticEffect* Effect, ETargetEnum Target, float VibrationOffset)
+{
+  if (!WorldContextObject || !Effect) return nullptr; // Ensure both context and effect are valid
+  UWorld* World = WorldContextObject->GetWorld();
+  if (!World) return nullptr;
+
+  // Spawn the HapticSource actor with a specific spawn parameters structure to defer its initialization
+  FActorSpawnParameters SpawnParams;
+  SpawnParams.bDeferConstruction = true; // This defers the PostInitializeComponents and other initializations
+  AHapticSource* HapticSource = World->SpawnActor<AHapticSource>(AHapticSource::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+  if (!HapticSource) return nullptr;
+
+  // Assign the haptic effect and properties
+  HapticSource->HapticEffect = Effect;
+  HapticSource->VibrationOffset = VibrationOffset;
+
+  // Manually finish the spawning process and force initialization to occur now, after setting properties
+  FTransform ActorTransform; // Default transform, you can customize this if needed
+  HapticSource->FinishSpawning(ActorTransform);
+
+  // Now setup targets and play the haptic effect
+  HapticSource->SetTargets(Target);
+  HapticSource->Play();
+
+  return HapticSource;
 }

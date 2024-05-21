@@ -3,8 +3,8 @@
 * ​
 */
 
-#include "..\Public\HAR.h"
-#include "..\Public\enums.h"
+#include "HAR.h"
+#include "enums.h"
 
 #include "CoreMinimal.h"
 #include <Core.h>
@@ -56,6 +56,18 @@ int InterhapticsEngine::AddHM(const char* _content)
 	return -1;
 }
 
+int InterhapticsEngine::AddParametricEffect(double* _amplitude, int _amplitudeSize, double* _pitch, int _pitchSize, double _freqMin, double _freqMax, double* _transient, int _transientSize, bool _isLooping)
+{
+	uintptr_t DllExport = IH_GETDLLEXPORT("AddParametricEffect", DllExport, v_Handle);
+	if (DllExport)
+	{
+		typedef int (*FuncType)(double*, int, double*, int, double, double, double*, int, bool);
+		FuncType func = (FuncType)(DllExport);
+		return func(_amplitude, _amplitudeSize, _pitch, _pitchSize, _freqMin, _freqMax, _transient, _transientSize, _isLooping);
+	}
+	return -1;  // Return -1 if the function pointer was not found
+}
+
 void InterhapticsEngine::PlayEvent(int _hMaterialID, double _vibrationOffset, double _textureOffset, double _stiffnessOffset)
 {
 	uintptr_t DllExport;
@@ -77,6 +89,18 @@ void InterhapticsEngine::StopEvent(int _hMaterialID)
 		typedef void(*GetStopEvent)(int _hMaterialID);
 		GetStopEvent StopEventFunc = (GetStopEvent)(DllExport);
 		return (void)StopEventFunc(_hMaterialID);
+	}
+}
+
+void InterhapticsEngine::StopAllEvents()
+{
+	uintptr_t DllExport;
+	DllExport = IH_GETDLLEXPORT("StopAllEvents", DllExport, v_Handle);
+	if (DllExport)
+	{
+		typedef void(*GetStopAllEvents)();
+		GetStopAllEvents StopAllEventsFunc = (GetStopAllEvents)(DllExport);
+		return (void)StopAllEventsFunc();
 	}
 }
 
@@ -151,6 +175,40 @@ void InterhapticsEngine::AddBodyPart(Interhaptics::HapticBodyMapping::Perception
 		typedef void(*GetAddBodyPart)(Interhaptics::HapticBodyMapping::Perception _perception, Interhaptics::HapticBodyMapping::BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, bool _realTime);
 		GetAddBodyPart AddBodyPartFunc = (GetAddBodyPart)(DllExport);
 		return (void)AddBodyPartFunc(_perception, _bodyPartID, _xDimension, _yDimension, _zDimension, _sampleRate, _hd, _splitFrequency, _splitTransient, _realTime);
+	}
+}
+
+double InterhapticsEngine::GetGlobalIntensity()
+{
+	uintptr_t DllExport = IH_GETDLLEXPORT("GetGlobalIntensity", DllExport, v_Handle);
+	if (DllExport)
+	{
+		typedef double(*FuncType)();
+		FuncType func = (FuncType)(DllExport);
+		return func();
+	}
+	return -1; // Indicate failure or not initialized
+}
+
+void InterhapticsEngine::SetGlobalIntensity(double _intensity)
+{
+	uintptr_t DllExport = IH_GETDLLEXPORT("SetGlobalIntensity", DllExport, v_Handle);
+	if (DllExport)
+	{
+		typedef void(*FuncType)(double);
+		FuncType func = (FuncType)(DllExport);
+		func(_intensity);
+	}
+}
+
+void InterhapticsEngine::SetEventIntensity(int _hMaterialID, double _intensity)
+{
+	uintptr_t DllExport = IH_GETDLLEXPORT("SetEventIntensity", DllExport, v_Handle);
+	if (DllExport)
+	{
+		typedef void(*FuncType)(int, double);
+		FuncType func = (FuncType)(DllExport);
+		func(_hMaterialID, _intensity);
 	}
 }
 

@@ -1,10 +1,10 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
 #include "HapticDeviceManager.h"
-#include "../Public/enums.h"
+#include "enums.h"
 
 void InterhapticsEngine::HapticDeviceManager::InitializeAll()
 {
@@ -29,64 +29,66 @@ void InterhapticsEngine::HapticDeviceManager::InitializeAll()
 	}
 }
 
-std::vector<void*>& InterhapticsEngine::HapticDeviceManager::GetDeviceProviders()
-{
-	return IH_DEVICE_PROVIDERS;
-}
-
 void InterhapticsEngine::HapticDeviceManager::RenderAll()
 {
-	// Check if a controller is connected
-	bool controllerConnected = false;
-	for (auto& provider : IH_DEVICE_PROVIDERS)
-	{
-		if (provider)
-		{
-			// Call the ProviderIsPresent function for this provider to check if a controller is connected
-			uintptr_t DllExport = IH_GETDLLEXPORT("ProviderIsPresent", DllExport, provider);
-			if (DllExport)
-			{
-				typedef bool(*GetIsPresent)();
-				GetIsPresent IsPresentFunc = (GetIsPresent)(DllExport);
-				if (IsPresentFunc())
-				{
-					controllerConnected = true;
-					break;
-				}
-			}
-		}
-	}
+  // Check if a controller is connected
+  bool controllerConnected = false;
+  for (auto& provider : IH_DEVICE_PROVIDERS)
+  {
+    if (provider)
+    {
+      // Call the ProviderIsPresent function for this provider to check if a controller is connected
+      uintptr_t DllExport = IH_GETDLLEXPORT("ProviderIsPresent", DllExport, provider);
+      if (DllExport)
+      {
+        typedef bool(*GetIsPresent)();
+        GetIsPresent IsPresentFunc = (GetIsPresent)(DllExport);
+        if (IsPresentFunc() && IsPresentFunc)
+        {
+          controllerConnected = true;
+          break;
+        }
+      }
+    }
+  }
 
-	if (!controllerConnected)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No controller connected during rendering."));
-		return;
-	}
+  if (!controllerConnected)
+  {
+    UE_LOG(LogTemp, Warning, TEXT("No controller connected during rendering."));
+    return;
+  }
 
-	// Render haptics for the first provider
-	if (!IH_DEVICE_PROVIDERS.empty())
-	{
-		void* provider = IH_DEVICE_PROVIDERS[0];
-		if (provider)
-		{
-			// Call the ProviderRenderHaptics function for this provider
-			uintptr_t DllExport = IH_GETDLLEXPORT("ProviderRenderHaptics", DllExport, provider);
-			if (DllExport)
-			{
-				typedef void(*GetRenderHaptics)();
-				GetRenderHaptics RenderHapticsFunc = (GetRenderHaptics)(DllExport);
-				if (RenderHapticsFunc)
-				{
-					RenderHapticsFunc();
-				}
-				else
-				{
-					UE_LOG(LogTemp, Warning, TEXT("RenderHapticsFunc is null."));
-				}
-			}
-		}
-	}
+    for (auto& provider : IH_DEVICE_PROVIDERS)
+    {
+      if (provider)
+      {
+        // Call the ProviderRenderHaptics function for this provider
+        uintptr_t DllExport = IH_GETDLLEXPORT("ProviderRenderHaptics", DllExport, provider);
+        if (DllExport)
+        {
+          typedef void(*GetRenderHaptics)();
+          GetRenderHaptics RenderHapticsFunc = (GetRenderHaptics)(DllExport);
+          if (RenderHapticsFunc)
+          {
+            try {
+              RenderHapticsFunc();
+            }
+            catch (const std::exception& e) {
+              UE_LOG(LogTemp, Error, TEXT("Exception during haptics rendering: %s"), *FString(e.what()));
+            }
+            catch (...) {
+              UE_LOG(LogTemp, Error, TEXT("Unknown exception during haptics rendering"));
+            }
+          }
+          else
+          {
+            UE_LOG(LogTemp, Warning, TEXT("RenderHapticsFunc is null."));
+          }
+        }
+      }
+    }
 }
+
 void InterhapticsEngine::HapticDeviceManager::CleanAll()
 {
 	for (auto it : IH_DEVICE_PROVIDERS)
@@ -122,6 +124,6 @@ void InterhapticsEngine::HapticDeviceManager::AddProvider(void* device)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Attempted to add a null device provider."));
+		UE_LOG(LogTemp, Warning, TEXT("Attempted to add a null device provider.")); 
 	}
 }

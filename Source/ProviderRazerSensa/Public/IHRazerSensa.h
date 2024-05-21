@@ -1,14 +1,13 @@
 /* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
 #pragma once
 
 #include "Modules/ModuleManager.h"
-#include "HapticManager.h"
 
-class FInterhapticsModule : public IModuleInterface
+class FIHRazerSensaModule : public IModuleInterface
 {
 public:
 

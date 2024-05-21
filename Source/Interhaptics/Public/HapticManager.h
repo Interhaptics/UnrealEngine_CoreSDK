@@ -1,5 +1,5 @@
-﻿/* ​
-* Copyright © 2023 Go Touch VR SAS. All rights reserved.
+/* ​
+* Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
@@ -30,4 +30,17 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	// Called when actor is destroyed
 	virtual void BeginDestroy() override;
+  static AHapticManager* CurrentInstance;
+
+  virtual ~AHapticManager();
+
+  static UWorld* GetWorldStatic();
+
+	// Blueprint callable function to get the global intensity
+	UFUNCTION(BlueprintCallable, Category = "Interhaptics")
+	float GetGlobalHapticIntensity();
+
+	// Blueprint callable function to set the global intensity
+	UFUNCTION(BlueprintCallable, Category = "Interhaptics")
+	void SetGlobalHapticIntensity(float Intensity);
 };

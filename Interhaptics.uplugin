@@ -1,44 +1,49 @@
 {
-	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.0",
-	"FriendlyName": "Interhaptics",
-	"Description": "Interhaptics UE SDK",
-	"Category": "Other",
-	"CreatedBy": "Interhaptics",
-	"CreatedByURL": "https://www.interhaptics.com",
-	"DocsURL": "https://www.interhaptics.com/doc/interhaptics-unreal-sdk/",
-	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/144f63ae2fc3428587323e77cffdb0eb",
-	"SupportURL": "https://discord.gg/nfFkJvurb7",
-	"CanContainContent": true,
-	"IsBetaVersion": false,
-	"IsExperimentalVersion": false,
-	"Installed": false,
-  	"EngineVersion": "",
-	"Modules": [
-		{
-			"Name": "Interhaptics",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Switch", "PS5" ]
-		},
-		{
-			"Name": "IHGameInput",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64" ]
-		},
-		{
-			"Name": "HapticEffect",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Switch", "PS5" ]
-		},
-		{
-			"Name": "HapticEffectEditor",
-			"Type": "Editor",
-			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64" ]
-		}
-	]
-}
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.1",
+  "FriendlyName": "Interhaptics",
+  "Description": "Interhaptics UE SDK",
+  "Category": "Other",
+  "CreatedBy": "Interhaptics",
+  "CreatedByURL": "https://www.interhaptics.com",
+  "DocsURL": "https://www.interhaptics.com/doc/interhaptics-unreal-sdk/",
+  "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/144f63ae2fc3428587323e77cffdb0eb",
+  "SupportURL": "https://discord.gg/nfFkJvurb7",
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "IsExperimentalVersion": false,
+  "Installed": false,
+  "EngineVersion": "",
+  "Modules": [
+  {
+    "Name": "Interhaptics",
+    "Type": "Runtime",
+    "LoadingPhase": "Default",
+    "WhitelistPlatforms": [ "Win64", "Switch", "PS5" ]
+  },
+  {
+    "Name": "IHGameInput",
+    "Type": "Runtime",
+    "LoadingPhase": "Default",
+    "WhitelistPlatforms": [ "Win64" ]
+  },
+  {
+    "Name": "IHRazerSensa",
+    "Type": "Runtime",
+    "LoadingPhase": "Default",
+    "WhitelistPlatforms": [ "Win64" ]
+  },
+  {
+    "Name": "HapticEffect",
+    "Type": "Runtime",
+    "LoadingPhase": "Default",
+    "WhitelistPlatforms": [ "Win64", "Switch", "PS5" ]
+  },
+  {
+    "Name": "HapticEffectEditor",
+    "Type": "Editor",
+    "LoadingPhase": "Default",
+    "WhitelistPlatforms": [ "Win64" ]
+  }
+] }
