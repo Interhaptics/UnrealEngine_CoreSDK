@@ -24,7 +24,6 @@ AHapticManager::AHapticManager()
   else
     {
       UE_LOG(LogTemp, Warning, TEXT("Attempt to create multiple instances of HapticManager."));
-      Destroy(); // Optionally destroy this newly attempted instance or handle as necessary
     }
 }
 

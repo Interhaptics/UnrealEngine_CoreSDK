@@ -1,3 +1,8 @@
+# 2024.06.12
+# v1.2.1
+
++ Fix HapticManager singleton behavior
+
 # 2024.05.21
 # v1.2.0
 
