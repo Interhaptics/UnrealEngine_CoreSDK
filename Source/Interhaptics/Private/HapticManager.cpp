@@ -47,17 +47,12 @@ void AHapticManager::Tick(float DeltaTime)
   if (!InterhapticsEngine::HapticDeviceManager::IH_DEVICE_PROVIDERS.empty()) // Check if there are any devices
   {
     InterhapticsEngine::ComputeAllEvents((double)(GetWorld()->GetTimeSeconds()));
-    try {
-      InterhapticsEngine::HapticDeviceManager::RenderAll();
-    }
-    catch (const std::exception& e) {
-      UE_LOG(LogTemp, Error, TEXT("Exception caught in Tick: %s"), *FString(e.what()));
-    }
-    catch (...) {
-      UE_LOG(LogTemp, Error, TEXT("Unknown exception caught in Tick"));
-    }
+    InterhapticsEngine::HapticDeviceManager::RenderAll();
   }
-
+  else
+  {
+    UE_LOG(LogTemp, Warning, TEXT("No Haptic Device found. Haptics will not be rendered."));
+  }
 }
 
 void AHapticManager::BeginDestroy()

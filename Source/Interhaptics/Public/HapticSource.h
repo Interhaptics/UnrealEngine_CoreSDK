@@ -82,5 +82,5 @@ public:
 private:	
 	int hapticEffectID = -1;
 
-	void ConvertTarget(ETargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget);
+  Interhaptics::HapticBodyMapping::CommandData ConvertTarget(ETargetEnum Target);
 };

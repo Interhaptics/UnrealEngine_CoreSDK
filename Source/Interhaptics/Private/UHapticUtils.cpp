@@ -5,7 +5,7 @@
 
 #include "UHapticUtils.h"
 
-void UUHapticUtils::ConvertTarget(EAPITargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget)
+Interhaptics::HapticBodyMapping::CommandData UUHapticUtils::ConvertTarget(EAPITargetEnum Target)
 {
   Interhaptics::HapticBodyMapping::GroupID		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Palm;
   Interhaptics::HapticBodyMapping::Operator		_PLUS = Interhaptics::HapticBodyMapping::Operator::Plus;
@@ -105,7 +105,7 @@ void UUHapticUtils::ConvertTarget(EAPITargetEnum Target, Interhaptics::HapticBod
     break;
   }
 
-  *returnTarget = Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
+  return Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
 }
 
 void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target, float VibrationOffset)
@@ -128,6 +128,7 @@ void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum
   UE_LOG(LogTemp, Warning, TEXT("Haptic Effect ID: %d"), hapticEffectID);
   if (hapticEffectID == -1)
   {
+    UE_LOG(LogTemp, Warning, TEXT("Failed to create haptic effect. ID: %d"), hapticEffectID);
     return;
   }
 
@@ -135,13 +136,11 @@ void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum
 
   if (Target == EAPITargetEnum::TE_None)
   {
+    UE_LOG(LogTemp, Warning, TEXT("Target not specified"));
     return;
   }
-  UE_LOG(LogTemp, Warning, TEXT("Target: %d"), Target);
-  Interhaptics::HapticBodyMapping::CommandData* returnTarget = (Interhaptics::HapticBodyMapping::CommandData*)malloc(sizeof(Interhaptics::HapticBodyMapping::CommandData));
-  ConvertTarget(Target, returnTarget);
-  UE_LOG(LogTemp, Warning, TEXT("Return Target: %d"), returnTarget);
-  InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, returnTarget, 1);
+  Interhaptics::HapticBodyMapping::CommandData returnTarget = ConvertTarget(Target);
+  InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, &returnTarget, 1);
   double playTime = (double)(-VibrationOffset - World->GetTimeSeconds());
   InterhapticsEngine::PlayEvent(hapticEffectID, playTime, 0.0, 0.0);
 }
@@ -209,16 +208,11 @@ void UUHapticUtils::PlayParametricHapticEffect(const TArray<double>& Amplitude, 
   UE_LOG(LogTemp, Log, TEXT("Playing Parametric Haptic Effect ID: %d"), hapticEffectID);
   if (hapticEffectID == -1)
   {
-    return;
     UE_LOG(LogTemp, Warning, TEXT("Failed to create parametric haptic effect."));
+    return;
   }
-
-  Interhaptics::HapticBodyMapping::CommandData* returnTarget = (Interhaptics::HapticBodyMapping::CommandData*)malloc(sizeof(Interhaptics::HapticBodyMapping::CommandData));
-  ConvertTarget(Target, returnTarget); 
-  InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, returnTarget, 1);
-
+  Interhaptics::HapticBodyMapping::CommandData returnTarget = ConvertTarget(Target);
+  InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, &returnTarget, 1);
   double playTime = (double)(- VibrationOffset - World->GetTimeSeconds());
   InterhapticsEngine::PlayEvent(hapticEffectID, playTime, 0.0, 0.0);
-
-  free(returnTarget); // to free the dynamically allocated memory
 }

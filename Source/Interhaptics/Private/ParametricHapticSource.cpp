@@ -126,13 +126,11 @@ void AParametricHapticSource::SetTargets(EParametricTargetEnum Target)
 		return;
 	}
 
-	// Switch to new/delete for memory allocation in UE4
-	Interhaptics::HapticBodyMapping::CommandData* returnTarget = (Interhaptics::HapticBodyMapping::CommandData*)malloc(sizeof(Interhaptics::HapticBodyMapping::CommandData));
-	ConvertTarget(Target, returnTarget);
-	InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, returnTarget, 1);
+	Interhaptics::HapticBodyMapping::CommandData returnTarget = ConvertTarget(Target);
+	InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, &returnTarget, 1);
 }
 
-void AParametricHapticSource::ConvertTarget(EParametricTargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget)
+Interhaptics::HapticBodyMapping::CommandData AParametricHapticSource::ConvertTarget(EParametricTargetEnum Target)
 {
 	Interhaptics::HapticBodyMapping::GroupID		_BODYPART = Interhaptics::HapticBodyMapping::GroupID::Palm;
 	Interhaptics::HapticBodyMapping::Operator		_PLUS = Interhaptics::HapticBodyMapping::Operator::Plus;
@@ -232,7 +230,7 @@ void AParametricHapticSource::ConvertTarget(EParametricTargetEnum Target, Interh
 		break;
 	}
 
-	*returnTarget = Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
+	return Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
 }
 
 void AParametricHapticSource::SetHapticEventIntensity(float Intensity)

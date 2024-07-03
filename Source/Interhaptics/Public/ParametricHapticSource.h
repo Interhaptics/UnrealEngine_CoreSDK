@@ -100,7 +100,7 @@ public:
 private:
 	int hapticEffectID = -1;
 
-	void ConvertTarget(EParametricTargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget);
+  Interhaptics::HapticBodyMapping::CommandData ConvertTarget(EParametricTargetEnum Target);
 	// Helper function to log array contents for debugging
 	void LogArrayContents(const TArray<double>& Array, const TCHAR* ArrayName);
 };

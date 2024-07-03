@@ -43,19 +43,13 @@ void InterhapticsEngine::HapticDeviceManager::RenderAll()
       {
         typedef bool(*GetIsPresent)();
         GetIsPresent IsPresentFunc = (GetIsPresent)(DllExport);
-        if (IsPresentFunc() && IsPresentFunc)
+        if (IsPresentFunc)
         {
           controllerConnected = true;
           break;
         }
       }
     }
-  }
-
-  if (!controllerConnected)
-  {
-    UE_LOG(LogTemp, Warning, TEXT("No controller connected during rendering."));
-    return;
   }
 
     for (auto& provider : IH_DEVICE_PROVIDERS)
@@ -70,15 +64,7 @@ void InterhapticsEngine::HapticDeviceManager::RenderAll()
           GetRenderHaptics RenderHapticsFunc = (GetRenderHaptics)(DllExport);
           if (RenderHapticsFunc)
           {
-            try {
               RenderHapticsFunc();
-            }
-            catch (const std::exception& e) {
-              UE_LOG(LogTemp, Error, TEXT("Exception during haptics rendering: %s"), *FString(e.what()));
-            }
-            catch (...) {
-              UE_LOG(LogTemp, Error, TEXT("Unknown exception during haptics rendering"));
-            }
           }
           else
           {

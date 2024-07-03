@@ -61,13 +61,12 @@ void AHapticSource::SetTargets(ETargetEnum Target)
 		return;
 	}
 
-	Interhaptics::HapticBodyMapping::CommandData* returnTarget = (Interhaptics::HapticBodyMapping::CommandData*)malloc(sizeof(Interhaptics::HapticBodyMapping::CommandData));
-	ConvertTarget(Target, returnTarget);
+  Interhaptics::HapticBodyMapping::CommandData returnTarget = ConvertTarget(Target);
+  InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, &returnTarget, 1);
 
-	InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, returnTarget, 1);
 }
 
-void AHapticSource::ConvertTarget(ETargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget)
+Interhaptics::HapticBodyMapping::CommandData AHapticSource::ConvertTarget(ETargetEnum Target)
 {
 	Interhaptics::HapticBodyMapping::GroupID		_BODYPART	= Interhaptics::HapticBodyMapping::GroupID::Palm;
 	Interhaptics::HapticBodyMapping::Operator		_PLUS		= Interhaptics::HapticBodyMapping::Operator::Plus;
@@ -167,7 +166,7 @@ void AHapticSource::ConvertTarget(ETargetEnum Target, Interhaptics::HapticBodyMa
 		break;
 	}
 
-	*returnTarget = Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
+  return Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
 }
 
 void AHapticSource::SetHapticEventIntensity(float Intensity)

@@ -5,11 +5,15 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
 #include "../../HapticEffect/Public/HapticEffect.h"
 #include "HAR.h"
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Engine.h"
+#include "Engine/World.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "UHapticUtils.generated.h"
+
 
 UENUM(BlueprintType)
 enum class EAPITargetEnum : uint8
@@ -45,7 +49,8 @@ class INTERHAPTICS_API UUHapticUtils : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-  UFUNCTION(BlueprintCallable, Category = "Interhaptics")  static void PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffset = 0.0f);
+  UFUNCTION(BlueprintCallable, Category = "Interhaptics")
+  static void PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffset = 0.0f);
 
   UFUNCTION(BlueprintCallable, Category = "Interhaptics")
   static void PlayParametricHapticEffect(const TArray<double>& Amplitude, const TArray<double>& Pitch, const TArray<double>& Transient, float FrequencyMin = 65.0f, float FrequencyMax = 300.0f, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffset = 0.0f);
@@ -53,5 +58,5 @@ public:
 private:
   int hapticEffectID = -1;
 
-  static void ConvertTarget(EAPITargetEnum Target, Interhaptics::HapticBodyMapping::CommandData* returnTarget);
+  static Interhaptics::HapticBodyMapping::CommandData ConvertTarget(EAPITargetEnum Target);
 };

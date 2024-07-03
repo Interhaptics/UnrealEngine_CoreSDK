@@ -1,3 +1,10 @@
+# 2024.07.02
+# v1.2.2
+
++ Fixed memory leaks on target creation
++ Fixed loading issues with GameInput provider
++ Known issue with Razer Sensa devkit controller not compatible
+
 # 2024.06.12
 # v1.2.1
 
