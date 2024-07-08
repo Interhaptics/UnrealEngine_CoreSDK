@@ -108,15 +108,16 @@ Interhaptics::HapticBodyMapping::CommandData UUHapticUtils::ConvertTarget(EAPITa
   return Interhaptics::HapticBodyMapping::CommandData(_PLUS, _BODYPART, _LATERAL);
 }
 
-void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target, float VibrationOffset)
+void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target, float VibrationOffsetAPI)
 {
   // Get the world using the static method on AHapticManager
   UWorld* World = AHapticManager::GetWorldStatic();
   if (!World)
   {
     UE_LOG(LogTemp, Warning, TEXT("Invalid world context."));
-    return; // Early exit if world context is not available
+    //return; // Early exit if world context is not available
   }
+  AHapticManager* HapticManager = AHapticManager::CurrentInstance; // Directly accessing the static instance
   if (HapticEffect == NULL)
   {
     GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HAPS NOT ASSIGNED")));
@@ -132,8 +133,6 @@ void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum
     return;
   }
 
-  InterhapticsEngine::RemoveAllTargetsFromEvent(hapticEffectID);
-
   if (Target == EAPITargetEnum::TE_None)
   {
     UE_LOG(LogTemp, Warning, TEXT("Target not specified"));
@@ -141,11 +140,11 @@ void UUHapticUtils::PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum
   }
   Interhaptics::HapticBodyMapping::CommandData returnTarget = ConvertTarget(Target);
   InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, &returnTarget, 1);
-  double playTime = (double)(-VibrationOffset - World->GetTimeSeconds());
-  InterhapticsEngine::PlayEvent(hapticEffectID, playTime, 0.0, 0.0);
+  float playTime = -VibrationOffsetAPI - World->GetTimeSeconds();
+  InterhapticsEngine::PlayEvent(hapticEffectID, (double)playTime, 0.0, 0.0);
 }
 
-void UUHapticUtils::PlayParametricHapticEffect(const TArray<double>& Amplitude, const TArray<double>& Pitch, const TArray<double>& Transient, float FrequencyMin, float FrequencyMax, EAPITargetEnum Target, float VibrationOffset)
+void UUHapticUtils::PlayParametricHapticEffect(const TArray<float>& Amplitude, const TArray<float>& Pitch, const TArray<float>& Transient, float FrequencyMin, float FrequencyMax, EAPITargetEnum Target, float VibrationOffsetAPI)
 {
   UWorld* World = AHapticManager::GetWorldStatic();
   if (!World)
@@ -165,8 +164,8 @@ void UUHapticUtils::PlayParametricHapticEffect(const TArray<double>& Amplitude, 
   int amplitudeSize = Amplitude.Num() % 2 == 0 ? Amplitude.Num() : Amplitude.Num() - 1;
   int pitchSize = Pitch.Num() % 2 == 0 ? Pitch.Num() : Pitch.Num() - 1;
 
-  TArray<double> NonConstAmplitude(Amplitude.GetData(), amplitudeSize);
-  TArray<double> NonConstPitch(Pitch.GetData(), pitchSize);
+  TArray<float> NonConstAmplitude(Amplitude.GetData(), amplitudeSize);
+  TArray<float> NonConstPitch(Pitch.GetData(), pitchSize);
 
   if (Amplitude.Num() % 2 != 0) {
     UE_LOG(LogTemp, Warning, TEXT("Amplitude array truncated to ensure even size. New size: %d"), NonConstAmplitude.Num());
@@ -177,7 +176,7 @@ void UUHapticUtils::PlayParametricHapticEffect(const TArray<double>& Amplitude, 
 
   // Ensure Transient array is a multiple of three
   int transientSize = (Transient.Num() / 3) * 3;
-  TArray<double> NonConstTransient(Transient.GetData(), transientSize);
+  TArray<float> NonConstTransient(Transient.GetData(), transientSize);
 
   if (Transient.Num() % 3 != 0) {
     UE_LOG(LogTemp, Warning, TEXT("Transient array truncated to multiple of three. New size: %d"), NonConstTransient.Num());
@@ -213,6 +212,6 @@ void UUHapticUtils::PlayParametricHapticEffect(const TArray<double>& Amplitude, 
   }
   Interhaptics::HapticBodyMapping::CommandData returnTarget = ConvertTarget(Target);
   InterhapticsEngine::AddTargetToEventMarshal(hapticEffectID, &returnTarget, 1);
-  double playTime = (double)(- VibrationOffset - World->GetTimeSeconds());
-  InterhapticsEngine::PlayEvent(hapticEffectID, playTime, 0.0, 0.0);
+  float playTime = - VibrationOffsetAPI - World->GetTimeSeconds();
+  InterhapticsEngine::PlayEvent(hapticEffectID, (double)playTime, 0.0, 0.0);
 }

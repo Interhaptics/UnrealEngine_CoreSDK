@@ -40,8 +40,8 @@ void AParametricHapticSource::PostInitializeComponents()
   int amplitudeSize = Amplitude.Num() % 2 == 0 ? Amplitude.Num() : Amplitude.Num() - 1;
   int pitchSize = Pitch.Num() % 2 == 0 ? Pitch.Num() : Pitch.Num() - 1;
 
-  TArray<double> NonConstAmplitude(Amplitude.GetData(), amplitudeSize);
-  TArray<double> NonConstPitch(Pitch.GetData(), pitchSize);
+  TArray<float> NonConstAmplitude(Amplitude.GetData(), amplitudeSize);
+  TArray<float> NonConstPitch(Pitch.GetData(), pitchSize);
 
   if (Amplitude.Num() % 2 != 0) {
     UE_LOG(LogTemp, Warning, TEXT("Amplitude array truncated to ensure even size. New size: %d"), NonConstAmplitude.Num());
@@ -52,7 +52,7 @@ void AParametricHapticSource::PostInitializeComponents()
 
   // Ensure Transient array is a multiple of three
   int transientSize = (Transient.Num() / 3) * 3;
-  TArray<double> NonConstTransient(Transient.GetData(), transientSize);
+  TArray<float> NonConstTransient(Transient.GetData(), transientSize);
 
   if (Transient.Num() % 3 != 0) {
     UE_LOG(LogTemp, Warning, TEXT("Transient array truncated to multiple of three. New size: %d"), NonConstTransient.Num());
@@ -76,10 +76,10 @@ void AParametricHapticSource::PostInitializeComponents()
 
   // Call to the haptic engine with hardcoded values
    hapticEffectID = InterhapticsEngine::AddParametricEffect(
-     NonConstAmplitude.Num() > 0 ? NonConstAmplitude.GetData() : nullptr, NonConstAmplitude.Num(),
-     NonConstPitch.Num() > 0 ? NonConstPitch.GetData() : nullptr, NonConstPitch.Num(),
+     NonConstAmplitude.Num() > 0 ? (NonConstAmplitude.GetData()) : nullptr, NonConstAmplitude.Num(),
+     NonConstPitch.Num() > 0 ? (NonConstPitch.GetData()) : nullptr, NonConstPitch.Num(),
     FrequencyMin, FrequencyMax,
-     NonConstTransient.Num() > 0 ? NonConstTransient.GetData() : nullptr, NonConstTransient.Num(),
+     NonConstTransient.Num() > 0 ? (NonConstTransient.GetData()) : nullptr, NonConstTransient.Num(),
     false);
 
   // Optionally log the ID of the created haptic effect
@@ -244,9 +244,9 @@ void AParametricHapticSource::SetHapticEventIntensity(float Intensity)
 
 AParametricHapticSource* AParametricHapticSource::CreateAndPlayParametricHaptics(
   UObject* WorldContextObject,
-  const TArray<double>& InAmplitude,
-  const TArray<double>& InPitch,
-  const TArray<double>& InTransient,
+  const TArray<float>& InAmplitude,
+  const TArray<float>& InPitch,
+  const TArray<float>& InTransient,
   float InFrequencyMin,
   float InFrequencyMax,
   EParametricTargetEnum Target,
@@ -277,7 +277,7 @@ AParametricHapticSource* AParametricHapticSource::CreateAndPlayParametricHaptics
   return ParametricHapticSource;
 }
 
-void AParametricHapticSource::LogArrayContents(const TArray<double>& Array, const TCHAR* ArrayName)
+void AParametricHapticSource::LogArrayContents(const TArray<float>& Array, const TCHAR* ArrayName)
 {
 	FString ArrayContents;
 	for (int i = 0; i < Array.Num(); ++i)

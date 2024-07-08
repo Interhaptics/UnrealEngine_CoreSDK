@@ -1,4 +1,4 @@
-﻿/* ​
+/* ​
 * Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
@@ -56,16 +56,38 @@ int InterhapticsEngine::AddHM(const char* _content)
 	return -1;
 }
 
-int InterhapticsEngine::AddParametricEffect(double* _amplitude, int _amplitudeSize, double* _pitch, int _pitchSize, double _freqMin, double _freqMax, double* _transient, int _transientSize, bool _isLooping)
+int InterhapticsEngine::AddParametricEffect(float* _amplitude, int _amplitudeSize, float* _pitch, int _pitchSize, float _freqMin, float _freqMax, float* _transient, int _transientSize, bool _isLooping)
 {
-	uintptr_t DllExport = IH_GETDLLEXPORT("AddParametricEffect", DllExport, v_Handle);
-	if (DllExport)
-	{
-		typedef int (*FuncType)(double*, int, double*, int, double, double, double*, int, bool);
-		FuncType func = (FuncType)(DllExport);
-		return func(_amplitude, _amplitudeSize, _pitch, _pitchSize, _freqMin, _freqMax, _transient, _transientSize, _isLooping);
-	}
-	return -1;  // Return -1 if the function pointer was not found
+  uintptr_t DllExport = IH_GETDLLEXPORT("AddParametricEffect", DllExport, v_Handle);
+  if (DllExport)
+  {
+    // Define the function type with double parameters
+    typedef int (*FuncType)(double*, int, double*, int, double, double, double*, int, bool);
+    FuncType func = (FuncType)(DllExport);
+
+    // Create temporary double arrays and variables
+    std::vector<double> doubleAmplitude(_amplitudeSize);
+    std::vector<double> doublePitch(_pitchSize);
+    std::vector<double> doubleTransient(_transientSize);
+    double doubleFreqMin = static_cast<double>(_freqMin);
+    double doubleFreqMax = static_cast<double>(_freqMax);
+
+    // Convert float arrays to double
+    for (int i = 0; i < _amplitudeSize; ++i)
+      doubleAmplitude[i] = static_cast<double>(_amplitude[i]);
+    for (int i = 0; i < _pitchSize; ++i)
+      doublePitch[i] = static_cast<double>(_pitch[i]);
+    for (int i = 0; i < _transientSize; ++i)
+      doubleTransient[i] = static_cast<double>(_transient[i]);
+
+    // Call the function with double parameters
+    return func(doubleAmplitude.data(), _amplitudeSize,
+      doublePitch.data(), _pitchSize,
+      doubleFreqMin, doubleFreqMax,
+      doubleTransient.data(), _transientSize,
+      _isLooping);
+  }
+  return -1;  // Return -1 if the function pointer was not found
 }
 
 void InterhapticsEngine::PlayEvent(int _hMaterialID, double _vibrationOffset, double _textureOffset, double _stiffnessOffset)

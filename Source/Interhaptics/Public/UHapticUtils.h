@@ -7,6 +7,7 @@
 
 #include "../../HapticEffect/Public/HapticEffect.h"
 #include "HAR.h"
+#include "HapticManager.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine.h"
@@ -50,10 +51,10 @@ class INTERHAPTICS_API UUHapticUtils : public UBlueprintFunctionLibrary
 
 public:
   UFUNCTION(BlueprintCallable, Category = "Interhaptics")
-  static void PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffset = 0.0f);
+  static void PlayHapticEffect(UHapticEffect* HapticEffect, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffsetAPI = 0.0f);
 
   UFUNCTION(BlueprintCallable, Category = "Interhaptics")
-  static void PlayParametricHapticEffect(const TArray<double>& Amplitude, const TArray<double>& Pitch, const TArray<double>& Transient, float FrequencyMin = 65.0f, float FrequencyMax = 300.0f, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffset = 0.0f);
+  static void PlayParametricHapticEffect(const TArray<float>& Amplitude, const TArray<float>& Pitch, const TArray<float>& Transient, float FrequencyMin = 65.0f, float FrequencyMax = 300.0f, EAPITargetEnum Target = EAPITargetEnum::TE_BothPalms, float VibrationOffsetAPI = 0.0f);
 
 private:
   int hapticEffectID = -1;

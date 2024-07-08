@@ -1,3 +1,9 @@
+# 2024.07.08
+# v1.2.3
+
++ Fixed a rendering issue with Razer Sensa devkits
++ Changed blueprint using double to float for UE4 compatibility
+
 # 2024.07.02
 # v1.2.2
 

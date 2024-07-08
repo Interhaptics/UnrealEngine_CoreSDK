@@ -50,10 +50,10 @@ public:
 
 	// Properties that can be set in the editor or Blueprints
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics|ParametricInput")
-	TArray<double> Amplitude;
+	TArray<float> Amplitude;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics|ParametricInput")
-	TArray<double> Pitch;
+	TArray<float> Pitch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics|ParametricInput")
 	float FrequencyMin;
@@ -62,7 +62,7 @@ public:
 	float FrequencyMax;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics|ParametricInput")
-	TArray<double> Transient;
+	TArray<float> Transient;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interhaptics")
 	float VibrationOffset;
 
@@ -82,9 +82,9 @@ public:
   UFUNCTION(BlueprintCallable, Category = "Interhaptics", meta = (WorldContext = "WorldContextObject", DisplayName = "Create and Play Parametric Haptics"))
   static AParametricHapticSource* CreateAndPlayParametricHaptics(
     UObject* WorldContextObject,
-    const TArray<double>& InAmplitude,
-    const TArray<double>& InPitch,
-    const TArray<double>& InTransient,
+    const TArray<float>& InAmplitude,
+    const TArray<float>& InPitch,
+    const TArray<float>& InTransient,
     float InFrequencyMin = 65.0f,
     float InFrequencyMax = 300.0f,
     EParametricTargetEnum Target = EParametricTargetEnum::TE_BothPalms,
@@ -102,5 +102,5 @@ private:
 
   Interhaptics::HapticBodyMapping::CommandData ConvertTarget(EParametricTargetEnum Target);
 	// Helper function to log array contents for debugging
-	void LogArrayContents(const TArray<double>& Array, const TCHAR* ArrayName);
+	void LogArrayContents(const TArray<float>& Array, const TCHAR* ArrayName);
 };

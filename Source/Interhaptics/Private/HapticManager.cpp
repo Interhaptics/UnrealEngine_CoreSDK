@@ -9,6 +9,7 @@
 
 
 AHapticManager* AHapticManager::CurrentInstance = nullptr;
+FTimerHandle UpdateTimerHandle;
 
 // Sets default values
 AHapticManager::AHapticManager()
@@ -38,13 +39,14 @@ void AHapticManager::PreInitializeComponents()
 void AHapticManager::BeginPlay()
 {
 	Super::BeginPlay();
+  // Set up timer to run at 30 Hz (1/30 seconds interval)
+  const float UpdateInterval = 1.0f / 30.0f;
+  GetWorldTimerManager().SetTimer(UpdateTimerHandle, this, &AHapticManager::UpdateHaptics, UpdateInterval, true);
 }
 
-// Called every frame
-void AHapticManager::Tick(float DeltaTime)
+void AHapticManager::UpdateHaptics()
 {
-	Super::Tick(DeltaTime);
-  if (!InterhapticsEngine::HapticDeviceManager::IH_DEVICE_PROVIDERS.empty()) // Check if there are any devices
+  if (!InterhapticsEngine::HapticDeviceManager::IH_DEVICE_PROVIDERS.empty())  // Check if there are any devices
   {
     InterhapticsEngine::ComputeAllEvents((double)(GetWorld()->GetTimeSeconds()));
     InterhapticsEngine::HapticDeviceManager::RenderAll();
@@ -55,11 +57,16 @@ void AHapticManager::Tick(float DeltaTime)
   }
 }
 
+void AHapticManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+  Super::EndPlay(EndPlayReason);
+  GetWorldTimerManager().ClearTimer(UpdateTimerHandle);
+}
+
 void AHapticManager::BeginDestroy()
 {
 	InterhapticsEngine::HapticDeviceManager::CleanAll();
 	InterhapticsEngine::Quit();
-
 	Super::BeginDestroy();
 }
 
@@ -75,13 +82,15 @@ AHapticManager::~AHapticManager()
 
 UWorld* AHapticManager::GetWorldStatic()
 {
-  return CurrentInstance ? CurrentInstance->GetWorld() : nullptr;
+  FWorldContext* world = GEngine->GetWorldContextFromGameViewport(GEngine->GameViewport);
+
+  return world->World();
 }
 
 float AHapticManager::GetGlobalHapticIntensity()
 {
-	double intensity = InterhapticsEngine::GetGlobalIntensity();
-	return static_cast<float>(intensity);
+  float intensity = static_cast<float>(InterhapticsEngine::GetGlobalIntensity());
+  return intensity;
 }
 
 void AHapticManager::SetGlobalHapticIntensity(float Intensity)

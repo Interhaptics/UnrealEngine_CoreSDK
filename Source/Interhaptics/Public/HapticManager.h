@@ -23,11 +23,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+  void UpdateHaptics();
+
+  void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
 public:
 	// Called right before BeginPlay
 	virtual void PreInitializeComponents() override;
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	// Called when actor is destroyed
 	virtual void BeginDestroy() override;
   static AHapticManager* CurrentInstance;

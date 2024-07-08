@@ -1,4 +1,4 @@
-﻿/* ​
+/* ​
 * Copyright © 2024 Go Touch VR SAS. All rights reserved.
 * ​
 */
@@ -14,7 +14,7 @@ namespace InterhapticsEngine
 	INTERHAPTICS_API bool Init();
 	INTERHAPTICS_API void Quit();
 	INTERHAPTICS_API int AddHM(const char* _content);
-	INTERHAPTICS_API int AddParametricEffect(double* _amplitude, int _amplitudeSize, double* _pitch, int _pitchSize, double _freqMin, double _freqMax, double* _transient, int _transientSize, bool _isLooping);
+	INTERHAPTICS_API int AddParametricEffect(float* _amplitude, int _amplitudeSize, float* _pitch, int _pitchSize, float _freqMin, float _freqMax, float* _transient, int _transientSize, bool _isLooping);
 	INTERHAPTICS_API void AddBodyPart(Interhaptics::HapticBodyMapping::Perception _perception, Interhaptics::HapticBodyMapping::BodyPartID _bodyPartID, int _xDimension, int _yDimension, int _zDimension, double _sampleRate, bool _hd, bool _splitFrequency, bool _splitTransient, bool _realTime);
 	INTERHAPTICS_API void PlayEvent(int _hMaterialID, double _vibrationOffset = 0.0, double _textureOffset = 0.0, double _stiffnessOffset = 0.0);
 	INTERHAPTICS_API void StopEvent(int _hMaterialID);
