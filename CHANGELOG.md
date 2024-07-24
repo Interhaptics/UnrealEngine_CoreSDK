@@ -1,3 +1,8 @@
+# 2024.07.24
+# v1.2.4
+
++ Fixed an issue with haptic provider loading logic 
+
 # 2024.07.08
 # v1.2.3
 

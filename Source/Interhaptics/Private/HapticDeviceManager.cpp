@@ -5,28 +5,28 @@
 
 #include "HapticDeviceManager.h"
 #include "enums.h"
-
 void InterhapticsEngine::HapticDeviceManager::InitializeAll()
 {
-	for (auto it : IH_DEVICE_PROVIDERS)
-	{
-		if (!it)  // Check if the device pointer is null
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Device handle is null during initialization."));
-			continue;
-		}
-		uintptr_t DllExport;
-		DllExport = IH_GETDLLEXPORT("ProviderInit", DllExport, it);
-		if (DllExport)
-		{
-			typedef bool(*GetInit)();
-			GetInit InitFunc = (GetInit)(DllExport);
-			if (!((bool)InitFunc()))
-			{
-				printf("Provider failed to initialize. \n");
-			}
-		}
-	}
+  for (int i = IH_DEVICE_PROVIDERS.size() - 1; i >= 0; --i)
+  {
+    auto it = IH_DEVICE_PROVIDERS[i];
+    uintptr_t DllExport = IH_GETDLLEXPORT("ProviderInit", DllExport, it);
+    if (DllExport)
+    {
+      typedef bool(*GetInit)();
+      GetInit InitFunc = (GetInit)(DllExport);
+      if (!((bool)InitFunc()))
+      {
+        UE_LOG(LogTemp, Warning, TEXT("Provider failed to initialize. Removing provider at index %d."), i);
+        IH_DEVICE_PROVIDERS.erase(IH_DEVICE_PROVIDERS.begin() + i);
+      }
+    }
+    else
+    {
+      UE_LOG(LogTemp, Warning, TEXT("Failed to get ProviderInit function. Removing provider at index %d."), i);
+      IH_DEVICE_PROVIDERS.erase(IH_DEVICE_PROVIDERS.begin() + i);
+    }
+  }
 }
 
 void InterhapticsEngine::HapticDeviceManager::RenderAll()
