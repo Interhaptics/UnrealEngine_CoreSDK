@@ -34,15 +34,15 @@ void FInterhapticsModule::StartupModule()
 
 	if (LibraryPath.IsEmpty())
 	{
-		if (!InterhapticsEngine::v_Handle)
+		if (!v_Handle)
 		{
 			FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("LibraryError", "DLL path is empty"));
 		}
 	}
 	else
 	{
-		InterhapticsEngine::v_Handle = FPlatformProcess::GetDllHandle(*LibraryPath);
-		if (!InterhapticsEngine::v_Handle)
+		v_Handle = FPlatformProcess::GetDllHandle(*LibraryPath);
+		if (!v_Handle)
 		{
 			FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("LibraryError", "Failed to load InterhapticsEngine DLL"));
 		}
@@ -72,8 +72,8 @@ void FInterhapticsModule::ShutdownModule()
 	// we call this function before unloading the module.
 
 	// Free the dll handle
-	FPlatformProcess::FreeDllHandle(InterhapticsEngine::v_Handle);
-	InterhapticsEngine::v_Handle = nullptr;
+	FPlatformProcess::FreeDllHandle(v_Handle);
+	v_Handle = nullptr;
 }
 
 #undef LOCTEXT_NAMESPACE

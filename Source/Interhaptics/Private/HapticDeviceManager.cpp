@@ -7,7 +7,7 @@
 #include "enums.h"
 void InterhapticsEngine::HapticDeviceManager::InitializeAll()
 {
-  for (int i = IH_DEVICE_PROVIDERS.size() - 1; i >= 0; --i)
+  for (int i = IH_DEVICE_PROVIDERS.size() - 1; i >= 0; i--)
   {
     auto it = IH_DEVICE_PROVIDERS[i];
     uintptr_t DllExport = IH_GETDLLEXPORT("ProviderInit", DllExport, it);

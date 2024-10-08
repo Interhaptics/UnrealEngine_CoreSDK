@@ -15,12 +15,12 @@ namespace InterhapticsEngine
 {
 	namespace HapticDeviceManager
 	{
-		static void InitializeAll();
-		static void RenderAll();
-		static void CleanAll();
+		void InitializeAll();
+		void RenderAll();
+		void CleanAll();
 		INTERHAPTICS_API void AddProvider(void* deviceHandle);
 
-		static std::vector<void*> IH_DEVICE_PROVIDERS;
+		std::vector<void*> IH_DEVICE_PROVIDERS;
 
   };
 };

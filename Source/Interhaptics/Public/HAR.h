@@ -32,8 +32,6 @@ namespace InterhapticsEngine
 	INTERHAPTICS_API int startTriggerEffect(int id, bool isLeft);
 	INTERHAPTICS_API int stopTriggerEffect(bool isLeft);
 
-	static void* v_Handle;
-
 	#if PLATFORM_PS5
 	static void* v_DualSenseHandle;
 	#endif

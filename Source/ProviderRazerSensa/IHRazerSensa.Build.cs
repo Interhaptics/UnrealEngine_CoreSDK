@@ -46,13 +46,13 @@ public class IHRazerSensa : ModuleRules
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			// Add the import library
-			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "Lib", "Interhaptics.RazerSensaProvider.lib"));
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "Lib", "Interhaptics.RazerProvider.lib"));
 
 			// Delay-load the DLLs, so we can load them from the right place first
-			PublicDelayLoadDLLs.Add("Interhaptics.RazerSensaProvider.dll");
+			PublicDelayLoadDLLs.Add("Interhaptics.RazerProvider.dll");
 
 			// Ensure that the DLLs are staged along with the executable
-			RuntimeDependencies.Add(Path.Combine(ModuleDirectory, "Lib", "Interhaptics.RazerSensaProvider.dll"));
+			RuntimeDependencies.Add(Path.Combine(ModuleDirectory, "Lib", "Interhaptics.RazerProvider.dll"));
 		}
 	}
 }

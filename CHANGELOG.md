@@ -1,3 +1,11 @@
+# 2024.10.08
+# v1.3.0
+
++ Updated SDK for 5.4+ support
++ Rebuilt sample scene on UE 4.26 for retrocompatibility
++ Updated GameInput provider to v1.3.1
++ Updated Razer Sensa provider to v1.2.0
+
 # 2024.07.24
 # v1.2.4
 
