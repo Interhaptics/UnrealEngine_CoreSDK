@@ -1,3 +1,8 @@
+# 2024.10.18
+# v1.3.1
+
++ Fixed an issue that would result in a crash while cooking the project
+
 # 2024.10.08
 # v1.3.0
 

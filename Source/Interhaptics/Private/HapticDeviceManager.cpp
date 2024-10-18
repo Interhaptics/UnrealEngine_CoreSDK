@@ -92,7 +92,7 @@ void InterhapticsEngine::HapticDeviceManager::CleanAll()
 			GetClean CleanFunc = (GetClean)(DllExport);
 			if (!((bool)CleanFunc()))
 			{
-				printf("Provider failed to clean. \n");
+                UE_LOG(LogTemp, Warning, TEXT("Provider failed to clean."));
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-To import the Interhaptics SDK into Unreal Engine, follow these steps:
+To import the Interhaptics SDK into Unreal Engine, follow these steps (Steps 1-3 are for the Interhaptics plugin from the GitHub repository):
 
 1. Go YourProject folder and create a Plugins folder here (YourProject/Plugins).
 2. Go inside the Plugins folder and clone the repository here.
