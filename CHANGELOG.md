@@ -1,3 +1,10 @@
+# 2025.07.22
+# v1.4.1
+
++ Updated haptic engine to 1.13.0
++ Updated haptic providers
++ Removed deprecated parameters for PS5 adaptive triggers
+
 # 2024.12.24
 # v1.4.0
 

@@ -1,5 +1,5 @@
 /* ​
-* Copyright © 2024 Go Touch VR SAS. All rights reserved.
+* Copyright © 2025 Go Touch VR SAS. All rights reserved.
 * ​
 */
 
@@ -245,9 +245,9 @@ int InterhapticsEngine::startTriggerEffect(int id, bool isLeft)
 		void* DllExport = FPlatformProcess::GetDllExport(FModuleManager::GetModuleChecked<FInterhapticsModule>(FName(TEXT("Interhaptics"))).v_dualSenseHandle, *FString("startTriggerEffect"));
 		if (DllExport)
 		{
-			typedef int(*GetstartTriggerEffect)(int handle, int id, bool isLeft);
+			typedef int(*GetstartTriggerEffect)(int id, bool isLeft);
 			GetstartTriggerEffect GetstartTriggerEffectFunc = (GetstartTriggerEffect)(DllExport);
-			return (int)GetstartTriggerEffectFunc(0, id, isLeft);
+			return (int)GetstartTriggerEffectFunc(id, isLeft);
 		}
 	}
 #endif
@@ -261,9 +261,9 @@ int InterhapticsEngine::stopTriggerEffect(bool isLeft)
 		void* DllExport = FPlatformProcess::GetDllExport(FModuleManager::GetModuleChecked<FInterhapticsModule>(FName(TEXT("Interhaptics"))).v_dualSenseHandle, *FString("stopTriggerEffect"));
 		if (DllExport)
 		{
-			typedef int(*GetstopTriggerEffect)(int handle, bool isLeft);
+			typedef int(*GetstopTriggerEffect)(bool isLeft);
 			GetstopTriggerEffect GetstopTriggerEffectFunc = (GetstopTriggerEffect)(DllExport);
-			return (int)GetstopTriggerEffectFunc(0, isLeft);
+			return (int)GetstopTriggerEffectFunc(isLeft);
 		}
 	}
 #endif
